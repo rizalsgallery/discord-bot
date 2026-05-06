@@ -684,7 +684,7 @@ class TicketSystem(commands.Cog):
                     ticket = data
                     break
 
-           if not ticket:
+            if not ticket:
                 return
         
             MEMBER_ROLE_ID = 1499866593084178434
