@@ -531,11 +531,11 @@ class TicketSystem(commands.Cog):
     
         print(log_channel)
         
-        await log_channel.send(
+    await log_channel.send(
             f"Ticket #{ticket_id} mmed by {interaction.user.mention}\nVouch here: {mentions}"
         )
                
-        try:
+    try:
             await interaction.response.edit_message(view=view)
      except Exception:
             pass
