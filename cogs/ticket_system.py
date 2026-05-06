@@ -546,7 +546,6 @@ await self.log(
             "📌 Ticket Claimed",
             f"Ticket `{ticket_id}` claimed.",
             discord.Color.gold(),
-            Claimed_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
     # ---------------------------
