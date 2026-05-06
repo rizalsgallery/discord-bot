@@ -598,7 +598,7 @@ async def close_ticket(self, interaction, ticket_id):
         # Schedule deletion
         self.bot.loop.create_task(self.delete_after_delay(ticket_id, guild.id, channel.id if channel else None))
 
-    async def delete_after_delay(self, ticket_id, guild_id, channel_id):
+            async def delete_after_delay(self, ticket_id, guild_id, channel_id):
         await asyncio.sleep(30)
         ticket = self.tickets.get(ticket_id)
         if not ticket or ticket.get("status") != "closed":
