@@ -541,7 +541,7 @@ class TicketSystem(commands.Cog):
         pass
     await interaction.followup.send("✅ Ticket claimed.", ephemeral=True)
         
-       await self.log(
+    await self.log(
                 guild,
             "📌 Ticket Claimed",
             f"Ticket `{ticket_id}` claimed.",
