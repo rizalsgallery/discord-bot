@@ -536,10 +536,10 @@ class TicketSystem(commands.Cog):
         )
                
     try:
-            await interaction.response.edit_message(view=view)
-     except Exception:
-            pass
-       await interaction.followup.send("✅ Ticket claimed.", ephemeral=True)
+        await interaction.response.edit_message(view=view)
+    except Exception:
+        pass
+    await interaction.followup.send("✅ Ticket claimed.", ephemeral=True)
         
        await self.log(
                 guild,
