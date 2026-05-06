@@ -718,15 +718,17 @@ class TicketSystem(commands.Cog):
             guild = message.guild
             channel = guild.get_channel(ticket["channel_id"])
 
-            if channel:
-                await channel.send(
-                    ":lock: Ticket automatically closed after 2 vouches."
-                )
-
-                await channel.edit(
-                    name=f"closed-{channel.name}"
-                )
-
+           if channel:
+               await channel.send("🔒 Ticket automatically closed after 2 vouches.")
+               await channel.edit(name=f"closed-{channel.name}")
+        
+               self.bot.loop.create_task(
+                   self.delete_after_delay(
+                       ticket_id,
+                       guild.id,
+                       channel.id
+                  )
+              )
 
 async def setup(bot):
     await bot.add_cog(TicketSystem(bot))
