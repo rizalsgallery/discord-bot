@@ -665,20 +665,20 @@ class TicketSystem(commands.Cog):
             Reopened_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
-   @commands.Cog.listener()
-    async def on_message(self, message):
+        @commands.Cog.listener()
+        async def on_message(self, message):
 
-        if message.author.bot:
-            return
+            if message.author.bot:
+                return
+    
+            VOUCH_CHANNEL_ID = 1500529115906965605
+            MEMBER_ROLE_ID = 1499866593084178434
 
-        VOUCH_CHANNEL_ID = 1500529115906965605
-        MEMBER_ROLE_ID = 1499866593084178434
-
-        if message.channel.id != VOUCH_CHANNEL_ID:
-            return
-
-        if not message.reference:
-            return
+            if message.channel.id != VOUCH_CHANNEL_ID:
+                return
+    
+            if not message.reference:
+                return
 
         if not any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
             return
