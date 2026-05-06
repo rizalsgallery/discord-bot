@@ -657,7 +657,7 @@ class TicketSystem(commands.Cog):
         ticket["reopened_at"] = datetime.utcnow().isoformat()
         self.save_json(TICKETS_FILE, self.tickets)
 
-            await self.log(
+        await self.log(
             guild,
             "🔓 Ticket Reopened",
             f"Ticket `{ticket_id}` reopened.",
