@@ -548,11 +548,10 @@ await self.log(
     discord.Color.gold(),
 )
         
-
-    # ---------------------------
-    # CLOSE
-    # ---------------------------
-    async def close_ticket(self, interaction, ticket_id):
+# ---------------------------
+# CLOSE
+# ---------------------------
+async def close_ticket(self, interaction, ticket_id):
         await interaction.response.defer(ephemeral=True)
         ticket = self.tickets.get(ticket_id)
         if not ticket:
