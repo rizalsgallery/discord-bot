@@ -534,8 +534,7 @@ print(log_channel)
 await log_channel.send(
     f"Ticket #{ticket_id} mmed by {interaction.user.mention}\nVouch here: {mentions}"
 )
-        button.label = f"Claimed by {interaction.user.name}"
-        button.disabled = True
+       
         try:
             await interaction.response.edit_message(view=view)
         except Exception:
