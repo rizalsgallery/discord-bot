@@ -697,7 +697,7 @@ class TicketSystem(commands.Cog):
             ticket_id = ticket_id.lower()
         except:
             return
-print("FOUND TICKET:", ticket_id)
+        print("FOUND TICKET:", ticket_id)
         ticket = self.tickets.get(ticket_id)
 
         if not ticket:
