@@ -657,11 +657,7 @@ class TicketSystem(commands.Cog):
         ticket["reopened_at"] = datetime.utcnow().isoformat()
         self.save_json(TICKETS_FILE, self.tickets)
 
-        await interaction.response.send_message("🔓 Ticket reopened.", ephemeral=True)
-        if channel:
-            await channel.send(f"🔓 Ticket reopened by {interaction.user.mention}.")
-
-        await self.log(
+            await self.log(
             guild,
             "🔓 Ticket Reopened",
             f"Ticket `{ticket_id}` reopened.",
@@ -669,44 +665,44 @@ class TicketSystem(commands.Cog):
             Reopened_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
-@commands.Cog.listener()
-async def on_message(self, message):
+    @commands.Cog.listener()
+    async def on_message(self, message):
 
-    if message.author.bot:
-        return
+        if message.author.bot:
+            return
 
-    channel = message.channel
+        channel = message.channel
 
-    ticket = None
+        ticket = None
 
-    for tid, data in self.tickets.items():
-        if data.get("channel_id") == channel.id:
-            ticket = data
-            break
+        for tid, data in self.tickets.items():
+            if data.get("channel_id") == channel.id:
+                ticket = data
+                break
 
-    if not ticket:
-        return
+        if not ticket:
+            return
 
-    MEMBER_ROLE_ID = 1499866593084178434
+        MEMBER_ROLE_ID = 1499866593084178434
 
-    if any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
+        if any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
 
-        ticket.setdefault("vouches", [])
+            ticket.setdefault("vouches", [])
 
-        if message.author.id not in ticket["vouches"]:
-            ticket["vouches"].append(message.author.id)
-
-        self.save_json(TICKETS_FILE, self.tickets)
-
-        if len(ticket["vouches"]) >= 2:
-
-            ticket["status"] = "closed"
+            if message.author.id not in ticket["vouches"]:
+                ticket["vouches"].append(message.author.id)
 
             self.save_json(TICKETS_FILE, self.tickets)
 
-            await channel.send("🔒 Ticket automatically closed after 2 vouches.")
+            if len(ticket["vouches"]) >= 2:
 
-            await channel.edit(name=f"closed-{channel.name}")
+                ticket["status"] = "closed"
+
+                self.save_json(TICKETS_FILE, self.tickets)
+
+                await channel.send("🔒 Ticket automatically closed after 2 vouches.")
+
+                await channel.edit(name=f"closed-{channel.name}")
 
 
 async def setup(bot):
