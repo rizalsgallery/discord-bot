@@ -669,8 +669,8 @@ class TicketSystem(commands.Cog):
             Reopened_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
+        @commands.Cog.listener()
+        async def on_message(self, message):
 
             if message.author.bot:
                 return
