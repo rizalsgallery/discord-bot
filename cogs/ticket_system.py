@@ -665,66 +665,68 @@ class TicketSystem(commands.Cog):
             Reopened_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
-    @commands.Cog.listener()
-async def on_message(self, message):
+   @commands.Cog.listener()
+    async def on_message(self, message):
 
-    if message.author.bot:
-        return
+        if message.author.bot:
+            return
 
-    VOUCH_CHANNEL_ID = 1500529115906965605
-    MEMBER_ROLE_ID = 1499866593084178434
+        VOUCH_CHANNEL_ID = 1500529115906965605
+        MEMBER_ROLE_ID = 1499866593084178434
 
-    if message.channel.id != VOUCH_CHANNEL_ID:
-        return
+        if message.channel.id != VOUCH_CHANNEL_ID:
+            return
 
-    if not message.reference:
-        return
+        if not message.reference:
+            return
 
-    if not any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
-        return
+        if not any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
+            return
 
-    replied_message = await message.channel.fetch_message(
-        message.reference.message_id
-    )
+        replied_message = await message.channel.fetch_message(
+            message.reference.message_id
+        )
 
-    content = replied_message.content.lower()
+        content = replied_message.content.lower()
 
-    if "ticket #" not in content:
-        return
+        if "ticket #" not in content:
+            return
 
-    try:
-        ticket_id = content.split("ticket #")[1].split(" ")[0]
-    except:
-        return
+        try:
+            ticket_id = content.split("ticket #")[1].split(" ")[0]
+        except:
+            return
 
-    ticket = self.tickets.get(ticket_id)
+        ticket = self.tickets.get(ticket_id)
 
-    if not ticket:
-        return
+        if not ticket:
+            return
 
-    ticket.setdefault("vouches", [])
+        ticket.setdefault("vouches", [])
 
-    if message.author.id not in ticket["vouches"]:
-        ticket["vouches"].append(message.author.id)
-
-    self.save_json(TICKETS_FILE, self.tickets)
-
-    if len(ticket["vouches"]) >= 2:
-
-        ticket["status"] = "closed"
+        if message.author.id not in ticket["vouches"]:
+            ticket["vouches"].append(message.author.id)
 
         self.save_json(TICKETS_FILE, self.tickets)
 
-        guild = message.guild
-        channel = guild.get_channel(ticket["channel_id"])
+        if len(ticket["vouches"]) >= 2:
 
-        if channel:
-            await channel.send(
-                ":lock: Ticket automatically closed after 2 vouches."
-            )
+            ticket["status"] = "closed"
 
-            await channel.edit(
-                name=f"closed-{channel.name}"
-            )
+            self.save_json(TICKETS_FILE, self.tickets)
+
+            guild = message.guild
+            channel = guild.get_channel(ticket["channel_id"])
+
+            if channel:
+                await channel.send(
+                    ":lock: Ticket automatically closed after 2 vouches."
+                )
+
+                await channel.edit(
+                    name=f"closed-{channel.name}"
+                )
+
+
 async def setup(bot):
     await bot.add_cog(TicketSystem(bot))
