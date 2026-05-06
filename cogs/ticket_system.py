@@ -703,5 +703,5 @@ class TicketSystem(commands.Cog):
                     await channel.send("🔒 Ticket automatically closed after 2 vouches.")
         
                     await channel.edit(name=f"closed-{channel.name}")
-    async def setup(bot):
-        await bot.add_cog(TicketSystem(bot))
+async def setup(bot):
+    await bot.add_cog(TicketSystem(bot))
