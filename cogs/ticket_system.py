@@ -677,10 +677,14 @@ class TicketSystem(commands.Cog):
         
             channel = message.channel
         
-            ticket_id = str(channel.id)
-            ticket = self.tickets.get(ticket_id)
-        
-            if not ticket:
+            ticket = None
+
+            for tid, data in self.tickets.items():
+                if data.get("channel_id") == channel.id:
+                    ticket = data
+                    break
+
+           if not ticket:
                 return
         
             MEMBER_ROLE_ID = 1499866593084178434
