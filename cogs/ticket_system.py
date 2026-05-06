@@ -592,7 +592,7 @@ async def close_ticket(self, interaction, ticket_id):
             "🔒 Ticket Closed",
             f"Ticket `{ticket_id}` closed.",
             discord.Color.red(),
-            Closed_By=f"{interaction.user} (`{interaction.user.id}`)"
+         
         )
 
         # Schedule deletion
