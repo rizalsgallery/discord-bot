@@ -687,7 +687,19 @@ class TicketSystem(commands.Cog):
             message.reference.message_id
         )
 
-        content = replied_message.content.lower()
+        content = ""
+
+if replied_message.content:
+    content += replied_message.content.lower()
+
+if replied_message.embeds:
+    embed = replied_message.embeds[0]
+
+    if embed.description:
+        content += " " + embed.description.lower()
+
+    if embed.title:
+        content += " " + embed.title.lower()
 
         if "ticket #" not in content:
             return
