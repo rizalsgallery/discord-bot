@@ -523,8 +523,8 @@ class TicketSystem(commands.Cog):
         members = []
     
         for member in interaction.channel.members:
-        if any(role.id == MEMBER_ROLE_ID for role in member.roles):
-            members.append(member)
+            if any(role.id == MEMBER_ROLE_ID for role in member.roles):
+                members.append(member)
     
         members = members[:2]
         mentions = " ".join(member.mention for member in members)
