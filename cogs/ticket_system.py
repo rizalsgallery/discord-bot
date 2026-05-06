@@ -672,36 +672,36 @@ class TicketSystem(commands.Cog):
     @commands.Cog.listener()
         async def on_message(self, message):
 
-        if message.author.bot:
-            return
-    
-        channel = message.channel
-    
-        ticket_id = str(channel.id)
-        ticket = self.tickets.get(ticket_id)
-    
-        if not ticket:
-            return
-    
-        MEMBER_ROLE_ID = 1499866593084178434
-    
-        if any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
-    
-            ticket.setdefault("vouches", [])
-    
-            if message.author.id not in ticket["vouches"]:
-                ticket["vouches"].append(message.author.id)
-    
-            self.save_json(TICKETS_FILE, self.tickets)
-    
-            if len(ticket["vouches"]) >= 2:
-    
-                ticket["status"] = "closed"
-    
+            if message.author.bot:
+                return
+        
+            channel = message.channel
+        
+            ticket_id = str(channel.id)
+            ticket = self.tickets.get(ticket_id)
+        
+            if not ticket:
+                return
+        
+            MEMBER_ROLE_ID = 1499866593084178434
+        
+            if any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
+        
+                ticket.setdefault("vouches", [])
+        
+                if message.author.id not in ticket["vouches"]:
+                    ticket["vouches"].append(message.author.id)
+        
                 self.save_json(TICKETS_FILE, self.tickets)
-    
-                await channel.send("🔒 Ticket automatically closed after 2 vouches.")
-    
-                await channel.edit(name=f"closed-{channel.name}")
-async def setup(bot):
-    await bot.add_cog(TicketSystem(bot))
+        
+                if len(ticket["vouches"]) >= 2:
+        
+                    ticket["status"] = "closed"
+        
+                    self.save_json(TICKETS_FILE, self.tickets)
+        
+                    await channel.send("🔒 Ticket automatically closed after 2 vouches.")
+        
+                    await channel.edit(name=f"closed-{channel.name}")
+    async def setup(bot):
+        await bot.add_cog(TicketSystem(bot))
