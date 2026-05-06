@@ -704,42 +704,42 @@ if replied_message.embeds:
     if "ticket #" not in content:
             return
 
-    try:
-            ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
-            ticket_id = ticket_id.lower()
-        except:
-            return
-        print("FOUND TICKET:", ticket_id)
-        ticket = self.tickets.get(ticket_id)
+try:
+    ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
+    ticket_id = ticket_id.lower()
+except:
+    return
+print("FOUND TICKET:", ticket_id)
+ticket = self.tickets.get(ticket_id)
 
-        if not ticket:
-            return
+if not ticket:
+    return
 
-        ticket.setdefault("vouches", [])
+ticket.setdefault("vouches", [])
 
-        if message.author.id not in ticket["vouches"]:
-            ticket["vouches"].append(message.author.id)
+if message.author.id not in ticket["vouches"]:
+    ticket["vouches"].append(message.author.id)
 
-        self.save_json(TICKETS_FILE, self.tickets)
+self.save_json(TICKETS_FILE, self.tickets)
 
-        if len(ticket["vouches"]) >= 2:
+if len(ticket["vouches"]) >= 2:
 
-            ticket["status"] = "closed"
+    ticket["status"] = "closed"
 
-            self.save_json(TICKETS_FILE, self.tickets)
+    self.save_json(TICKETS_FILE, self.tickets)
 
-            guild = message.guild
-            channel = guild.get_channel(ticket["channel_id"])
+    guild = message.guild
+    channel = guild.get_channel(ticket["channel_id"])
 
-            if channel:
-                await channel.send("🔒 Ticket automatically closed after 2 vouches.")
-                await channel.edit(name=f"closed-{channel.name}")
-        
-                self.bot.loop.create_task(
-                    self.delete_after_delay(
-                        ticket_id,
-                        guild.id,
-                        channel.id
+    if channel:
+    await channel.send("🔒 Ticket automatically closed after 2 vouches.")
+    await channel.edit(name=f"closed-{channel.name}")
+
+    self.bot.loop.create_task(
+        self.delete_after_delay(
+            ticket_id,
+            guild.id,
+            channel.id
                   )
               )
 
