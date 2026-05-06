@@ -513,40 +513,40 @@ class TicketSystem(commands.Cog):
 
         ticket["claimed_by"] = interaction.user.id
         self.save_json(TICKETS_FILE, self.tickets)
-channel = interaction.channel
-
-MEMBER_ROLE_ID = 1499866593084178434
-LOG_CHANNEL_ID = 1500529115906965605
-
-log_channel = interaction.guild.get_channel(LOG_CHANNEL_ID)
-
-members = []
-
-for member in interaction.channel.members:
-    if any(role.id == MEMBER_ROLE_ID for role in member.roles):
-        members.append(member)
-
-members = members[:2]
-mentions = " ".join(member.mention for member in members)
-
-print(log_channel)
-
-await log_channel.send(
-    f"Ticket #{ticket_id} mmed by {interaction.user.mention}\nVouch here: {mentions}"
-)
-       
-try:
-    await interaction.response.edit_message(view=view)
-except Exception:
-    pass
-await interaction.followup.send("✅ Ticket claimed.", ephemeral=True)
-
-await self.log(
-        guild,
-        "📌 Ticket Claimed",
-        f"Ticket `{ticket_id}` claimed.",
-        discord.Color.gold(),
-)
+        channel = interaction.channel
+    
+        MEMBER_ROLE_ID = 1499866593084178434
+        LOG_CHANNEL_ID = 1500529115906965605
+    
+        log_channel = interaction.guild.get_channel(LOG_CHANNEL_ID)
+    
+        members = []
+    
+        for member in interaction.channel.members:
+        if any(role.id == MEMBER_ROLE_ID for role in member.roles):
+            members.append(member)
+    
+        members = members[:2]
+        mentions = " ".join(member.mention for member in members)
+    
+        print(log_channel)
+    
+        await log_channel.send(
+        f"Ticket #{ticket_id} mmed by {interaction.user.mention}\nVouch here: {mentions}"
+    )
+           
+    try:
+        await interaction.response.edit_message(view=view)
+    except Exception:
+        pass
+    await interaction.followup.send("✅ Ticket claimed.", ephemeral=True)
+    
+    await self.log(
+            guild,
+            "📌 Ticket Claimed",
+            f"Ticket `{ticket_id}` claimed.",
+            discord.Color.gold(),
+    )
         
 # ---------------------------
 # CLOSE
