@@ -513,45 +513,47 @@ class TicketSystem(commands.Cog):
 
         ticket["claimed_by"] = interaction.user.id
         self.save_json(TICKETS_FILE, self.tickets)
-        channel = interaction.channel
-    
-        MEMBER_ROLE_ID = 1499866593084178434
-        LOG_CHANNEL_ID = 1500529115906965605
-    
-        log_channel = interaction.guild.get_channel(LOG_CHANNEL_ID)
-    
-        members = []
-    
-        for member in interaction.channel.members:
-            if any(role.id == MEMBER_ROLE_ID for role in member.roles):
-                members.append(member)
-    
-        members = members[:2]
-        mentions = " ".join(member.mention for member in members)
-    
-        print(log_channel)
-        
-        await log_channel.send(
-                f"Ticket #{ticket_id} mmed by {interaction.user.mention}\nVouch here: {mentions}"
-            )
-                   
+channel = interaction.channel
+
+MEMBER_ROLE_ID = 1499866593084178434
+LOG_CHANNEL_ID = 1500529115906965605
+
+log_channel = interaction.guild.get_channel(LOG_CHANNEL_ID)
+
+members = []
+
+for member in interaction.channel.members:
+    if any(role.id == MEMBER_ROLE_ID for role in member.roles):
+        members.append(member)
+
+members = members[:2]
+mentions = " ".join(member.mention for member in members)
+
+print(log_channel)
+
+await log_channel.send(
+    f"Ticket #{ticket_id} mmed by {interaction.user.mention}\nVouch here: {mentions}"
+)
+        button.label = f"Claimed by {interaction.user.name}"
+        button.disabled = True
         try:
             await interaction.response.edit_message(view=view)
         except Exception:
             pass
         await interaction.followup.send("✅ Ticket claimed.", ephemeral=True)
-            
+
         await self.log(
-                    guild,
-                "📌 Ticket Claimed",
-                f"Ticket `{ticket_id}` claimed.",
-                discord.Color.gold(),
+            guild,
+            "📌 Ticket Claimed",
+            f"Ticket `{ticket_id}` claimed.",
+            discord.Color.gold(),
+            Claimed_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
-        
-# ---------------------------
-# CLOSE
-# ---------------------------
-async def close_ticket(self, interaction, ticket_id):
+
+    # ---------------------------
+    # CLOSE
+    # ---------------------------
+    async def close_ticket(self, interaction, ticket_id):
         await interaction.response.defer(ephemeral=True)
         ticket = self.tickets.get(ticket_id)
         if not ticket:
@@ -592,13 +594,13 @@ async def close_ticket(self, interaction, ticket_id):
             "🔒 Ticket Closed",
             f"Ticket `{ticket_id}` closed.",
             discord.Color.red(),
-         
+            Closed_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
         # Schedule deletion
         self.bot.loop.create_task(self.delete_after_delay(ticket_id, guild.id, channel.id if channel else None))
 
-async def delete_after_delay(self, ticket_id, guild_id, channel_id):
+    async def delete_after_delay(self, ticket_id, guild_id, channel_id):
         await asyncio.sleep(30)
         ticket = self.tickets.get(ticket_id)
         if not ticket or ticket.get("status") != "closed":
@@ -616,7 +618,7 @@ async def delete_after_delay(self, ticket_id, guild_id, channel_id):
     # ---------------------------
     # REOPEN
     # ---------------------------
-async def reopen_ticket(self, interaction, ticket_id):
+    async def reopen_ticket(self, interaction, ticket_id):
         ticket = self.tickets.get(ticket_id)
         if not ticket:
             return await interaction.response.send_message("❌ Ticket not found.", ephemeral=True)
@@ -643,6 +645,39 @@ async def reopen_ticket(self, interaction, ticket_id):
             Reopened_By=f"{interaction.user} (`{interaction.user.id}`)"
         )
 
+@commands.Cog.listener()
+async def on_message(self, message):
 
+    if message.author.bot:
+        return
+
+    channel = message.channel
+
+    ticket_id = str(channel.id)
+    ticket = self.tickets.get(ticket_id)
+
+    if not ticket:
+        return
+
+    MEMBER_ROLE_ID = 1499866593084178434
+
+    if any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
+
+        ticket.setdefault("vouches", [])
+
+        if message.author.id not in ticket["vouches"]:
+            ticket["vouches"].append(message.author.id)
+
+        self.save_json(TICKETS_FILE, self.tickets)
+
+        if len(ticket["vouches"]) >= 2:
+
+            ticket["status"] = "closed"
+
+            self.save_json(TICKETS_FILE, self.tickets)
+
+            await channel.send("🔒 Ticket automatically closed after 2 vouches.")
+
+            await channel.edit(name=f"closed-{channel.name}")
 async def setup(bot):
     await bot.add_cog(TicketSystem(bot))
