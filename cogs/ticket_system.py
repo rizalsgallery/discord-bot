@@ -616,7 +616,7 @@ async def delete_after_delay(self, ticket_id, guild_id, channel_id):
     # ---------------------------
     # REOPEN
     # ---------------------------
-    async def reopen_ticket(self, interaction, ticket_id):
+async def reopen_ticket(self, interaction, ticket_id):
         ticket = self.tickets.get(ticket_id)
         if not ticket:
             return await interaction.response.send_message("❌ Ticket not found.", ephemeral=True)
