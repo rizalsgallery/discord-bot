@@ -683,11 +683,11 @@ class TicketSystem(commands.Cog):
         if not any(role.id == MEMBER_ROLE_ID for role in message.author.roles):
             return
 
-        replied_message = await message.channel.fetch_message(
+replied_message = await message.channel.fetch_message(
             message.reference.message_id
-        )
+)
 
-        content = ""
+content = ""
 
 if replied_message.content:
     content += replied_message.content.lower()
@@ -701,10 +701,10 @@ if replied_message.embeds:
     if embed.title:
         content += " " + embed.title.lower()
 
-        if "ticket #" not in content:
+    if "ticket #" not in content:
             return
 
-        try:
+    try:
             ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
             ticket_id = ticket_id.lower()
         except:
