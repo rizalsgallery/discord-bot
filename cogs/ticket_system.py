@@ -687,42 +687,42 @@ class TicketSystem(commands.Cog):
             message.reference.message_id
 )
 
-    content = ""
-    
-    if replied_message.content:
-        content += replied_message.content.lower()
-    
-    if replied_message.embeds:
-        embed = replied_message.embeds[0]
-    
-        if embed.description:
-            content += " " + embed.description.lower()
-    
-        if embed.title:
-            content += " " + embed.title.lower()
-    
+        content = ""
+        
+        if replied_message.content:
+            content += replied_message.content.lower()
+        
+        if replied_message.embeds:
+            embed = replied_message.embeds[0]
+        
+            if embed.description:
+                content += " " + embed.description.lower()
+        
+            if embed.title:
+                content += " " + embed.title.lower()
+        
         if "ticket #" not in content:
-                return
-    
+                    return
+        
         try:
-                ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
-                ticket_id = ticket_id.lower()
+                    ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
+                    ticket_id = ticket_id.lower()
         except:
             return
-            print("FOUND TICKET:", ticket_id)
-            ticket = self.tickets.get(ticket_id)
+        print("FOUND TICKET:", ticket_id)
+        ticket = self.tickets.get(ticket_id)
             
-            if not ticket:
-                return
+        if not ticket:
+            return
             
-            ticket.setdefault("vouches", [])
+        ticket.setdefault("vouches", [])
             
-            if message.author.id not in ticket["vouches"]:
+        if message.author.id not in ticket["vouches"]:
                 ticket["vouches"].append(message.author.id)
             
-            self.save_json(TICKETS_FILE, self.tickets)
+        self.save_json(TICKETS_FILE, self.tickets)
             
-            if len(ticket["vouches"]) >= 2:
+        if len(ticket["vouches"]) >= 2:
             
                 ticket["status"] = "closed"
             
