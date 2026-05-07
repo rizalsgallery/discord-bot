@@ -495,6 +495,11 @@ class TicketSystem(commands.Cog):
     async def claim_ticket(self, interaction, ticket_id, view, button):
 
         ticket = self.tickets.get(ticket_id)
+        
+        print("CONTENT:", content)
+        print("TICKET ID:", ticket_id)
+        print("ALL TICKETS:", self.tickets.keys())
+        print("FOUND:", ticket)
 
         if not ticket:
             return await interaction.response.send_message(
