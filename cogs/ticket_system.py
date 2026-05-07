@@ -704,7 +704,7 @@ class TicketSystem(commands.Cog):
         if "ticket #" not in content:
                 return
     
-            try:
+        try:
                 ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
                 ticket_id = ticket_id.lower()
             except:
