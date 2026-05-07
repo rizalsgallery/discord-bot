@@ -705,13 +705,13 @@ class TicketSystem(commands.Cog):
                     return
         
         try:
-                    ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
-                    ticket_id = ticket_id.lower()
+            ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
+            ticket_id = ticket_id.lower()
         except:
             return
         print("FOUND TICKET:", ticket_id)
         ticket = self.tickets.get(ticket_id)
-
+    
         print("CONTENT:", content)
         print("TICKET ID:", ticket_id)
         print("ALL TICKETS:", self.tickets.keys())
