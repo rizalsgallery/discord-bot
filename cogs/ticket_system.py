@@ -707,8 +707,8 @@ class TicketSystem(commands.Cog):
         try:
                 ticket_id = content.split("ticket #")[1].split(" ")[0].strip()
                 ticket_id = ticket_id.lower()
-            except:
-                return
+        except:
+            return
             print("FOUND TICKET:", ticket_id)
             ticket = self.tickets.get(ticket_id)
             
