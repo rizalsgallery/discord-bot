@@ -711,9 +711,14 @@ class TicketSystem(commands.Cog):
             return
         print("FOUND TICKET:", ticket_id)
         ticket = self.tickets.get(ticket_id)
-            
-        if not ticket:
-            return
+
+        print("CONTENT:", content)
+        print("TICKET ID:", ticket_id)
+        print("ALL TICKETS:", self.tickets.keys())
+        print("FOUND:", ticket)
+
+    if not ticket:
+        return
             
         ticket.setdefault("vouches", [])
             
