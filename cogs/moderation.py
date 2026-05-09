@@ -22,8 +22,7 @@ class Moderation(commands.Cog):
                 )
                 return False
             
-            mod_role = interaction.guild.get_role(MOD_ROLE_ID)
-            if mod_role is None:
+            if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
                 await interaction.response.send_message(
                     "❌ Mod role not found in this server",
                     ephemeral=True
