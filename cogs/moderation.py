@@ -72,7 +72,11 @@ class Moderation(commands.Cog):
             except:
                 pass
         except Exception as e:
-            await interaction.response.send_message(f"❌ Error timing out member: {str(e)}", ephemeral=True)
+            print("TIMEOUT ERROR:", e)
+            await interaction.response.send_message(
+                f"❌ Error timing out member: {str(e)}",
+                ephemeral=True
+            )
 
     @app_commands.command(name="kick", description="Kick a member from the server")
     @app_commands.describe(
