@@ -66,7 +66,7 @@ class Moderation(commands.Cog):
             )
             embed.set_footer(text=f"Actioned by {interaction.user}", icon_url=interaction.user.avatar.url)
             
-            await interaction.followup.send(
+            await interaction.followup.send(embed=embed)
             
             try:
                 await member.send(f"You have been timed out in **{interaction.guild.name}** for {duration} minutes.\n**Reason:** {reason}")
