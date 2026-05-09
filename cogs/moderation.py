@@ -81,60 +81,62 @@ class Moderation(commands.Cog):
 
     @app_commands.command(name="warn", description="Warn a member")
     @app_commands.describe(
-    member="The member to warn",
-    reason="Reason for warning"
-)
-async def warn(
-    self,
-    interaction: discord.Interaction,
-    member: discord.Member,
-    reason: str = "No reason provided"
-):
-    await interaction.response.defer()
+        member="The member to warn",
+        reason="Reason for warning"
+    )
+    async def warn(
+        self,
+        interaction: discord.Interaction,
+        member: discord.Member,
+        reason: str = "No reason provided"
+    ):
+        await interaction.response.defer()
 
-    if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
-        await interaction.followup.send(
-            "❌ Mod role not configured",
-            ephemeral=True
-        )
-        return
+        if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
+            await interaction.followup.send(
+                "❌ Mod role not configured",
+                ephemeral=True
+            )
+            return
 
-    if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
-        await interaction.followup.send(
-            "❌ You don't have permission to use this command",
-            ephemeral=True
-        )
-        return
+        if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
+            await interaction.followup.send(
+                "❌ You don't have permission to use this command",
+                ephemeral=True
+            )
+            return
+
         if not hasattr(self, "warns"):
-        self.warns = {}
-    
+            self.warns = {}
+
         user_id = str(member.id)
-        
+
         if user_id not in self.warns:
             self.warns[user_id] = 0
-        
+
         self.warns[user_id] += 1
-        
+
         warn_count = self.warns[user_id]
-    embed = discord.Embed(
-        title="⚠️ Member Warned",
-        color=discord.Color.yellow(),
-        description=f"**Member:** {member.mention}\n**Warn:** #{warn_count}\n**Reason:** {reason}"
-    )
 
-    embed.set_footer(
-        text=f"Warned by {interaction.user}",
-        icon_url=interaction.user.avatar.url
-    )
-
-    await interaction.followup.send(embed=embed)
-
-    try:
-        await member.send(
-            f"You have been warned in **{interaction.guild.name}**.\n**Reason:** {reason}"
+        embed = discord.Embed(
+            title="⚠️ Member Warned",
+            color=discord.Color.yellow(),
+            description=f"**Member:** {member.mention}\n**Warn:** #{warn_count}\n**Reason:** {reason}"
         )
-    except:
-        pass
+
+        embed.set_footer(
+            text=f"Warned by {interaction.user}",
+            icon_url=interaction.user.avatar.url
+        )
+
+        await interaction.followup.send(embed=embed)
+
+        try:
+            await member.send(
+                f"You have been warned in **{interaction.guild.name}**.\n**Warn:** #{warn_count}\n**Reason:** {reason}"
+            )
+        except:
+            pass
 
     @app_commands.command(name="ban", description="Ban a member from the server")
     @app_commands.describe(
