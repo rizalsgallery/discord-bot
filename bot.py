@@ -28,11 +28,11 @@ bot = TicketBot(command_prefix='/', intents=intents)
 
 @bot.event
 async def on_ready():
-    
     guild = discord.Object(id=1499534653399371886)
 
     bot.tree.clear_commands(guild=guild)
     await bot.tree.sync(guild=guild)
+    
     synced = await bot.tree.sync()
 
     print(f"Synced {len(synced)} commands")
