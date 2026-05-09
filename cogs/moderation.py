@@ -33,24 +33,24 @@ class Moderation(commands.Cog):
         await interaction.response.defer(ephemeral=True)
         """Timeout a member"""
         if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
-            await interaction.response.send_message("❌ Mod role not configured", ephemeral=True)
+            await interaction.followup.send(("❌ Mod role not configured", ephemeral=True)
             return
             
         if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
             print([role.id for role in interaction.user.roles])
             print(MOD_ROLE_ID)
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 "❌ You don't have permission to use this command",
                 ephemeral=True
             )
             return
 
         if member == interaction.user:
-            await interaction.response.send_message("❌ You can't timeout yourself", ephemeral=True)
+            await interaction.followup.send(("❌ You can't timeout yourself", ephemeral=True)
             return
 
         if member.top_role >= interaction.user.top_role:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 "❌ You can't timeout someone with equal or higher role",
                 ephemeral=True
             )
@@ -66,7 +66,7 @@ class Moderation(commands.Cog):
             )
             embed.set_footer(text=f"Actioned by {interaction.user}", icon_url=interaction.user.avatar.url)
             
-            await interaction.response.send_message(embed=embed)
+            await interaction.followup.send(
             
             try:
                 await member.send(f"You have been timed out in **{interaction.guild.name}** for {duration} minutes.\n**Reason:** {reason}")
@@ -74,7 +74,7 @@ class Moderation(commands.Cog):
                 pass
         except Exception as e:
             print("TIMEOUT ERROR:", e)
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"❌ Error timing out member: {str(e)}",
                 ephemeral=True
             )
