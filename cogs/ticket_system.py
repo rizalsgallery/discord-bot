@@ -717,13 +717,13 @@ class TicketSystem(commands.Cog):
     print("ALL TICKETS:", self.tickets.keys())
     print("FOUND:", ticket)
 
-        if not ticket:
-            return
+    if not ticket:
+        return
             
-        ticket.setdefault("vouches", [])
+    ticket.setdefault("vouches", [])
             
-        if message.author.id not in ticket["vouches"]:
-                ticket["vouches"].append(message.author.id)
+    if message.author.id not in ticket["vouches"]:
+            ticket["vouches"].append(message.author.id)
             
         self.save_json(TICKETS_FILE, self.tickets)
             
