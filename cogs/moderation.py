@@ -58,8 +58,7 @@ class Moderation(commands.Cog):
             await interaction.response.send_message("❌ Mod role not configured", ephemeral=True)
             return
         
-        mod_role = interaction.guild.get_role(MOD_ROLE_ID)
-        if mod_role not in interaction.user.roles:
+        if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
             await interaction.response.send_message(
                 "❌ You don't have permission to use this command",
                 ephemeral=True
@@ -112,8 +111,7 @@ class Moderation(commands.Cog):
             await interaction.response.send_message("❌ Mod role not configured", ephemeral=True)
             return
         
-        mod_role = interaction.guild.get_role(MOD_ROLE_ID)
-        if mod_role not in interaction.user.roles:
+        if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
             await interaction.response.send_message(
                 "❌ You don't have permission to use this command",
                 ephemeral=True
@@ -166,8 +164,7 @@ class Moderation(commands.Cog):
             await interaction.response.send_message("❌ Mod role not configured", ephemeral=True)
             return
         
-        mod_role = interaction.guild.get_role(MOD_ROLE_ID)
-        if mod_role not in interaction.user.roles:
+        if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
             await interaction.response.send_message(
                 "❌ You don't have permission to use this command",
                 ephemeral=True
