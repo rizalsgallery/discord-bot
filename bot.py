@@ -39,3 +39,13 @@ async def on_ready():
         print(f"Failed to sync commands: {e}")
 
 bot.run(TOKEN)
+@bot.event
+async def on_ready():
+    guild = discord.Object(id=DEINE_SERVER_ID)
+
+    bot.tree.clear_commands(guild=guild)
+    await bot.tree.sync(guild=guild)
+
+    await bot.tree.sync()
+
+    print("Commands synced")
