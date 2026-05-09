@@ -12,15 +12,7 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def has_mod_role(self):
-        """Check if user has the moderator role"""
-        async def predicate(interaction: discord.Interaction) -> bool:
-            if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
-                await interaction.response.send_message(
-                    "❌ Mod role not configured. Please set MOD_ROLE_ID in .env file",
-                    ephemeral=True
-                )
-                return False
+    
             
             
             
