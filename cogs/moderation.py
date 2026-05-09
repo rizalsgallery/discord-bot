@@ -105,11 +105,21 @@ async def warn(
             ephemeral=True
         )
         return
-
+        if not hasattr(self, "warns"):
+        self.warns = {}
+    
+        user_id = str(member.id)
+        
+        if user_id not in self.warns:
+            self.warns[user_id] = 0
+        
+        self.warns[user_id] += 1
+        
+        warn_count = self.warns[user_id]
     embed = discord.Embed(
         title="⚠️ Member Warned",
         color=discord.Color.yellow(),
-        description=f"**Member:** {member.mention}\n**Reason:** {reason}"
+        description=f"**Member:** {member.mention}\n**Warn:** #{warn_count}\n**Reason:** {reason}"
     )
 
     embed.set_footer(
