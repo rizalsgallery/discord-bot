@@ -24,17 +24,7 @@ class Moderation(commands.Cog):
             
             
             
-            if mod_role not in interaction.user.roles:
-                await interaction.response.send_message(
-                    "❌ You don't have permission to use this command",
-                    ephemeral=True
-                )
-                return False
             
-            return True
-        
-        return app_commands.check(predicate)
-
     @app_commands.command(name="timeout", description="Timeout a member for a specified duration")
     @app_commands.describe(
         member="The member to timeout",
