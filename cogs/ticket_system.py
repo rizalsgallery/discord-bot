@@ -717,8 +717,8 @@ class TicketSystem(commands.Cog):
     print("ALL TICKETS:", self.tickets.keys())
     print("FOUND:", ticket)
 
-    if not ticket:
-        return
+        if not ticket:
+            return
             
         ticket.setdefault("vouches", [])
             
