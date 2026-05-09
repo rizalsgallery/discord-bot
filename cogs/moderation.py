@@ -30,7 +30,7 @@ class Moderation(commands.Cog):
         duration: int,
         reason: str = "No reason provided"
     ):
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
         """Timeout a member"""
         if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
             await interaction.followup.send("❌ Mod role not configured", ephemeral=True)
