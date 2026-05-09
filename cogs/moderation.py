@@ -79,58 +79,52 @@ class Moderation(commands.Cog):
                 ephemeral=True
             )
 
-    @app_commands.command(name="kick", description="Kick a member from the server")
-    @app_commands.describe(
-        member="The member to kick",
-        reason="Reason for kick"
+    @app_commands.command(name="warn", description="Warn a member")
+@app_commands.describe(
+    member="The member to warn",
+    reason="Reason for warning"
+)
+async def warn(
+    self,
+    interaction: discord.Interaction,
+    member: discord.Member,
+    reason: str = "No reason provided"
+):
+    await interaction.response.defer()
+
+    if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
+        await interaction.followup.send(
+            "❌ Mod role not configured",
+            ephemeral=True
+        )
+        return
+
+    if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
+        await interaction.followup.send(
+            "❌ You don't have permission to use this command",
+            ephemeral=True
+        )
+        return
+
+    embed = discord.Embed(
+        title="⚠️ Member Warned",
+        color=discord.Color.yellow(),
+        description=f"**Member:** {member.mention}\n**Reason:** {reason}"
     )
-    async def kick(
-        self,
-        interaction: discord.Interaction,
-        member: discord.Member,
-        reason: str = "No reason provided"
-    ):
-        """Kick a member from the server"""
-        if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
-            await interaction.response.send_message("❌ Mod role not configured", ephemeral=True)
-            return
-        
-        if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
-            await interaction.response.send_message(
-                "❌ You don't have permission to use this command",
-                ephemeral=True
-            )
-            return
 
-        if member == interaction.user:
-            await interaction.response.send_message("❌ You can't kick yourself", ephemeral=True)
-            return
+    embed.set_footer(
+        text=f"Warned by {interaction.user}",
+        icon_url=interaction.user.avatar.url
+    )
 
-        if member.top_role >= interaction.user.top_role:
-            await interaction.response.send_message(
-                "❌ You can't kick someone with equal or higher role",
-                ephemeral=True
-            )
-            return
+    await interaction.followup.send(embed=embed)
 
-        try:
-            await member.kick(reason=reason)
-            
-            embed = discord.Embed(
-                title="👢 Member Kicked",
-                color=discord.Color.orange(),
-                description=f"**Member:** {member.mention}\n**Reason:** {reason}"
-            )
-            embed.set_footer(text=f"Actioned by {interaction.user}", icon_url=interaction.user.avatar.url)
-            
-            await interaction.response.send_message(embed=embed)
-            
-            try:
-                await member.send(f"You have been kicked from **{interaction.guild.name}**.\n**Reason:** {reason}")
-            except:
-                pass
-        except Exception as e:
-            await interaction.response.send_message(f"❌ Error kicking member: {str(e)}", ephemeral=True)
+    try:
+        await member.send(
+            f"You have been warned in **{interaction.guild.name}**.\n**Reason:** {reason}"
+        )
+    except:
+        pass
 
     @app_commands.command(name="ban", description="Ban a member from the server")
     @app_commands.describe(
