@@ -80,7 +80,7 @@ class Moderation(commands.Cog):
             )
 
     @app_commands.command(name="warn", description="Warn a member")
-@app_commands.describe(
+    @app_commands.describe(
     member="The member to warn",
     reason="Reason for warning"
 )
