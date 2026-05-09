@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-MOD_ROLE_ID = 1499865433744998480
+MOD_ROLE_ID = 1499865378023538688
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
