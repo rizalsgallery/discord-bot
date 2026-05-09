@@ -34,8 +34,10 @@ class Moderation(commands.Cog):
         if not MOD_ROLE_ID or MOD_ROLE_ID == 0:
             await interaction.response.send_message("❌ Mod role not configured", ephemeral=True)
             return
-        
+            
         if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
+            print([role.id for role in interaction.user.roles])
+            print(MOD_ROLE_ID)
             await interaction.response.send_message(
                 "❌ You don't have permission to use this command",
                 ephemeral=True
