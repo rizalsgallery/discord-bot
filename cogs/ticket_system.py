@@ -709,27 +709,27 @@ class TicketSystem(commands.Cog):
             ticket_id = ticket_id.lower()
         except:
             return
-    print("FOUND TICKET:", ticket_id)
-    ticket = self.tickets.get(ticket_id)
-    
-    print("CONTENT:", content)
-    print("TICKET ID:", ticket_id)
-    print("ALL TICKETS:", self.tickets.keys())
-    print("FOUND:", ticket)
-
-    if not ticket:
-        return
+        print("FOUND TICKET:", ticket_id)
+        ticket = self.tickets.get(ticket_id)
             
-    ticket.setdefault("vouches", [])
-            
-    if message.author.id not in ticket["vouches"]:
-            ticket["vouches"].append(message.author.id)
-            
-        self.save_json(TICKETS_FILE, self.tickets)
-            
-        if len(ticket["vouches"]) >= 2:
-            
-                ticket["status"] = "closed"
+        print("CONTENT:", content)
+        print("TICKET ID:", ticket_id)
+        print("ALL TICKETS:", self.tickets.keys())
+        print("FOUND:", ticket)
+        
+        if not ticket:
+                return
+                    
+        ticket.setdefault("vouches", [])
+                    
+        if message.author.id not in ticket["vouches"]:
+                ticket["vouches"].append(message.author.id)
+                    
+                self.save_json(TICKETS_FILE, self.tickets)
+                    
+                if len(ticket["vouches"]) >= 2:
+                    
+                        ticket["status"] = "closed"
             
                 self.save_json(TICKETS_FILE, self.tickets)
             
