@@ -1,4 +1,4 @@
-  import discord
+import discord
   from discord.ext import commands
   
   AUTO_ROLE_ID = 1499866593084178434
