@@ -28,6 +28,8 @@ bot = TicketBot(command_prefix='/', intents=intents)
 
 @bot.event
 async def on_ready():
+    await bot.tree.sync()
+    print("Synced commands")
     print(f"{bot.user} is online!")
 
     try:
