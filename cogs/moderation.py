@@ -22,12 +22,7 @@ class Moderation(commands.Cog):
                 )
                 return False
             
-            if MOD_ROLE_ID not in [role.id for role in interaction.user.roles]:
-                await interaction.response.send_message(
-                    "❌ Mod role not found in this server",
-                    ephemeral=True
-                )
-                return False
+            
             
             if mod_role not in interaction.user.roles:
                 await interaction.response.send_message(
