@@ -32,7 +32,10 @@ async def on_ready():
 
     bot.tree.clear_commands(guild=guild)
     await bot.tree.sync(guild=guild)
+    guild = discord.Object(id=1499534653399371886)
 
+    bot.tree.clear_commands(guild=guild)
+    await bot.tree.sync(guild=guild)
     synced = await bot.tree.sync()
 
     print(f"Synced {len(synced)} commands")
