@@ -46,7 +46,7 @@ class Moderation(commands.Cog):
             return
 
         if member == interaction.user:
-            await interaction.followup.send(("❌ You can't timeout yourself", ephemeral=True)
+            await interaction.followup.send("❌ You can't timeout yourself", ephemeral=True)
             return
 
         if member.top_role >= interaction.user.top_role:
