@@ -83,7 +83,6 @@ class ClaimView(discord.ui.View):
             embed=embed,
             allowed_mentions=discord.AllowedMentions(roles=True)
         )
-        )
 class Giveaway(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
