@@ -96,12 +96,18 @@ class Giveaway(commands.Cog):
         value=f"<t:{end_time}:R>",
         inline=False
     )
-
         embed.add_field(
-            name="Requirements",
-            value=f"{invites} Invites\n{requirement}",
+            name="Invite Requirement",
+            value=f"{invites} Invites",
             inline=False
         )
+        
+        embed.add_field(
+            name="Extra Requirement",
+            value=requirement,
+            inline=False
+        )
+        
 
         embed.set_image(url=image)
 
