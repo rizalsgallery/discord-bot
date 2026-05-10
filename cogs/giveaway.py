@@ -74,7 +74,7 @@ class ClaimView(discord.ui.View):
 
         embed = discord.Embed(
             title="✅ Prize Claimed",
-            description=f"{interaction.user.mention} claimed their prize!",
+            description=f"{interaction.user.mention} claimed his prize!",
             color=discord.Color.green()
         )
 
