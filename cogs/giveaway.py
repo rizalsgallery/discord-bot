@@ -116,6 +116,47 @@ class Giveaway(commands.Cog):
             embed=embed,
             view=view
         )
+        
+        if duration.endswith("m"):
+            wait_time = int(duration[:-1]) * 60
+        
+        elif duration.endswith("h"):
+            wait_time = int(duration[:-1]) * 3600
+        
+        await asyncio.sleep(wait_time)
+        
+        if len(view.entries) == 0:
+            await interaction.channel.send(
+                "❌ No valid giveaway entries."
+            )
+            return
+        
+        winner_amount = min(winners, len(view.entries))
+        
+        winner_ids = random.sample(view.entries, winner_amount)
+        
+        winner_mentions = []
+        
+        for winner_id in winner_ids:
+            winner = interaction.guild.get_member(winner_id)
+        
+            if winner:
+                winner_mentions.append(winner.mention)
+        
+        winner_embed = discord.Embed(
+            title="🎉 Giveaway Ended",
+            description=(
+                f"Winners:\n{', '.join(winner_mentions)}\n\n"
+                f"You have **30 minutes** to claim your prize."
+            ),
+            color=discord.Color.green()
+        )
+        
+        await interaction.channel.send(
+            content=" ".join(winner_mentions),
+            embed=winner_embed
+        )
+        )
 
 async def setup(bot):
     await bot.add_cog(Giveaway(bot))
