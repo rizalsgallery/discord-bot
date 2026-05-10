@@ -1,10 +1,11 @@
+import time
 import discord
 from discord.ext import commands
 from discord import app_commands
 import asyncio
 import random
 
-GIVEAWAY_ROLE_ID = 1499865433744998480
+GIVEAWAY_ROLE_ID = 1499834061815025734
 
 class GiveawayView(discord.ui.View):
     def __init__(self, invites_required):
@@ -56,7 +57,7 @@ class Giveaway(commands.Cog):
         duration="Duration",
         invites="Required invites",
         image="Image URL",
-        requirement="Extra requirement"
+        extra="Extra requirement"
     )
     async def giveaway(
         self,
@@ -67,7 +68,7 @@ class Giveaway(commands.Cog):
         duration: str,
         invites: int,
         image: str,
-        requirement: str
+        extra: str
     ):
 
         role = interaction.guild.get_role(GIVEAWAY_ROLE_ID)
@@ -82,7 +83,19 @@ class Giveaway(commands.Cog):
         embed.add_field(name="Prize", value=prize, inline=False)
         embed.add_field(name="Sponsor", value=sponsor.mention, inline=False)
         embed.add_field(name="Winners", value=str(winners), inline=False)
-        embed.add_field(name="Duration", value=duration, inline=False)
+        time_amount = int(duration[:-1])
+
+        if duration.endswith("m"):
+        end_time = int(time.time()) + (time_amount * 60)
+
+        elif duration.endswith("h"):
+        end_time = int(time.time()) + (time_amount * 3600)
+
+        embed.add_field(
+        name="Ends",
+        value=f"<t:{end_time}:R>",
+        inline=False
+    )
 
         embed.add_field(
             name="Requirements",
