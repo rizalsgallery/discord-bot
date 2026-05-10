@@ -188,9 +188,17 @@ class Giveaway(commands.Cog):
             color=discord.Color.green()
         )
         
+        host_role = interaction.guild.get_role(GIVEAWAY_ROLE_ID)
+
+        claim_view = ClaimView(
+            winner_ids,
+            host_role
+        )
+        
         await interaction.channel.send(
             content=" ".join(winner_mentions),
-            embed=winner_embed
+            embed=winner_embed,
+            view=claim_view
         )
 
 async def setup(bot):
