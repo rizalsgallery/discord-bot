@@ -46,26 +46,75 @@ class Giveaway(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="giveaway", description="Create a giveaway")
-    @app_commands.describe(
-        prize="Prize of the giveaway",
-        duration="Duration in minutes"
+@app_commands.describe(
+    prize="Prize of the giveaway",
+    duration="Duration in minutes",
+    invites="Required invites",
+    image="Image URL",
+    role="Role to ping",
+    requirement="Extra requirement"
+)
+async def giveaway(
+    self,
+    interaction: discord.Interaction,
+    prize: str,
+    duration: int,
+    invites: int,
+    image: str,
+    role: discord.Role,
+    requirement: str
+):
+
+    class GiveawayView(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=None)
+            self.entries = []
+
+        @discord.ui.button(label="Join Giveaway", style=discord.ButtonStyle.green)
+        async def join_giveaway(self, interaction2: discord.Interaction, button: discord.ui.Button):
+
+            guild_invites = await interaction2.guild.invites()
+
+            total_invites = 0
+
+            for invite in guild_invites:
+                if invite.inviter == interaction2.user:
+                    total_invites += invite.uses
+
+            if total_invites < invites:
+                await interaction2.response.send_message(
+                    f"❌ You need {invites} invites to join.",
+                    ephemeral=True
+                )
+                return
+
+            if interaction2.user.id in self.entries:
+                await interaction2.response.send_message(
+                    "❌ You already joined.",
+                    ephemeral=True
+                )
+                return
+
+            self.entries.append(interaction2.user.id)
+
+            await interaction2.response.send_message(
+                "✅ You joined the giveaway.",
+                ephemeral=True
+            )
+
+    embed = discord.Embed(
+        title="🎉 Giveaway",
+        color=discord.Color.blurple()
     )
-    async def giveaway(
-        self,
-        interaction: discord.Interaction,
-        prize: str,
-        duration: int
-    ):
 
-        view = GiveawayView(prize)
+    embed.add_field(name="Prize", value=prize, inline=False)
+    embed.add_field(name="Requirements", value=f"{invites} Invites\n{requirement}", inline=False)
+    embed.add_field(name="Duration", value=f"{duration} Minutes", inline=False)
 
-        embed = discord.Embed(
-            title="🎉 Giveaway",
-            description=f"Prize: **{prize}**\nRequirement: **1 Invite**",
-            color=discord.Color.blurple()
-        )
+    embed.set_image(url=image)
 
-        await interaction.response.send_message(embed=embed, view=view)
-
-async def setup(bot):
-    await bot.add_cog(Giveaway(bot))
+    await interaction.response.send_message(
+        content=role.mention,
+        embed=embed,
+        view=GiveawayView()
+    )
