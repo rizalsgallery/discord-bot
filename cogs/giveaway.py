@@ -44,7 +44,43 @@ class GiveawayView(discord.ui.View):
             "✅ You joined the giveaway.",
             ephemeral=True
         )
+class ClaimView(discord.ui.View):
+    def __init__(self, winners, host_role):
+        super().__init__(timeout=1800)
 
+        self.winners = winners
+        self.claimed = []
+        self.host_role = host_role
+
+    @discord.ui.button(label="Claim Prize", style=discord.ButtonStyle.blurple)
+    async def claim_prize(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        if interaction.user.id not in self.winners:
+            await interaction.response.send_message(
+                "❌ You are not a winner.",
+                ephemeral=True
+            )
+            return
+
+        if interaction.user.id in self.claimed:
+            await interaction.response.send_message(
+                "❌ You already claimed your prize.",
+                ephemeral=True
+            )
+            return
+
+        self.claimed.append(interaction.user.id)
+
+        embed = discord.Embed(
+            title="✅ Prize Claimed",
+            description=f"{interaction.user.mention} claimed their prize!",
+            color=discord.Color.green()
+        )
+
+        await interaction.response.send_message(
+            content=self.host_role.mention,
+            embed=embed
+        )
 class Giveaway(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
