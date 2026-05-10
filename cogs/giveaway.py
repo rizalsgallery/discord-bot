@@ -156,7 +156,6 @@ class Giveaway(commands.Cog):
             content=" ".join(winner_mentions),
             embed=winner_embed
         )
-        )
 
 async def setup(bot):
     await bot.add_cog(Giveaway(bot))
