@@ -104,7 +104,7 @@ class Giveaway(commands.Cog):
         
         embed.add_field(
             name="Extra Requirement",
-            value=extra_requirement,
+            value=value=extra,
             inline=False
         )
         
