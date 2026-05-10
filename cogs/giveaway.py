@@ -85,7 +85,10 @@ class ClaimView(discord.ui.View):
 class Giveaway(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+    @app_commands.check(
+    lambda interaction:
+    GIVEAWAY_HOST_ROLE_ID in [role.id for role in interaction.user.roles]
+)
     @app_commands.command(name="giveaway", description="Create a giveaway")
     @app_commands.describe(
         prize="Prize",
