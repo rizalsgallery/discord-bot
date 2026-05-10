@@ -79,8 +79,10 @@ class ClaimView(discord.ui.View):
         )
 
         await interaction.response.send_message(
-            content=f"<@&{HOST_ROLE_ID}>",
-            embed=embed
+            content=role.mention,
+            embed=embed,
+            view=view,
+            allowed_mentions=discord.AllowedMentions(roles=True)
         )
 class Giveaway(commands.Cog):
     def __init__(self, bot):
