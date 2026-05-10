@@ -5,6 +5,7 @@ from discord import app_commands
 import asyncio
 import random
 
+HOST_ROLE_ID = 1503070325255176345
 GIVEAWAY_ROLE_ID = 1499834061815025734
 
 class GiveawayView(discord.ui.View):
@@ -78,7 +79,7 @@ class ClaimView(discord.ui.View):
         )
 
         await interaction.response.send_message(
-            content=self.host_role.mention,
+            content=f"<@&{HOST_ROLE_ID}>",
             embed=embed
         )
 class Giveaway(commands.Cog):
