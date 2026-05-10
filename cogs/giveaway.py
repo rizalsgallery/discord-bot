@@ -7,7 +7,7 @@ import random
 
 HOST_ROLE_ID = 1503070325255176345
 GIVEAWAY_ROLE_ID = 1499834061815025734
-
+GIVEAWAY_HOST_ROLE_ID = 1503070325255176345
 class GiveawayView(discord.ui.View):
     def __init__(self, invites_required):
         super().__init__(timeout=None)
