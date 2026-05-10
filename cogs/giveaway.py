@@ -86,10 +86,10 @@ class Giveaway(commands.Cog):
         time_amount = int(duration[:-1])
 
         if duration.endswith("m"):
-        end_time = int(time.time()) + (time_amount * 60)
+            end_time = int(time.time()) + (time_amount * 60)
 
         elif duration.endswith("h"):
-        end_time = int(time.time()) + (time_amount * 3600)
+            end_time = int(time.time()) + (time_amount * 3600)
 
         embed.add_field(
         name="Ends",
